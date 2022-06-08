@@ -6,11 +6,13 @@ import matplotlib.ticker as ticker
 
 
 if __name__ == '__main__':
+    # input merchandise
     # read history data
-    # extract date and USD/NTD
+    # extract date and merchandise
     # save data as pandas dataframe
+    merchandise = input("merchandise:")
     data = pd.read_csv('history.csv', encoding= 'unicode_escape', header=[0])
-    data = data[['date','USD/NTD']]
+    data = data[['date',merchandise]]
 
     # get train data to train ai model
     # use last 30 days data to predict current data
@@ -22,9 +24,9 @@ if __name__ == '__main__':
         temp = []
         for j in range(0, 31):
             if j == 30:
-                y_train.append(data['USD/NTD'][i+j] - data['USD/NTD'][i])
+                y_train.append(data[merchandise][i+j] - data[merchandise][i])
             else:
-                temp.append(data['USD/NTD'][i+j] - data['USD/NTD'][i])
+                temp.append(data[merchandise][i+j] - data[merchandise][i])
         x_train.append(temp)
 
     # get test data to predict price
@@ -34,12 +36,12 @@ if __name__ == '__main__':
     x_base = []
     for i in range(2136, 2960):
         temp = []
-        x_base.append(data['USD/NTD'][i])
+        x_base.append(data[merchandise][i])
         for j in range(0, 31):
             if j == 30:
-                y_test.append(data['USD/NTD'][i+j] - data['USD/NTD'][i])
+                y_test.append(data[merchandise][i+j] - data[merchandise][i])
             else:
-                temp.append(data['USD/NTD'][i+j] - data['USD/NTD'][i])
+                temp.append(data[merchandise][i+j] - data[merchandise][i])
         x_test.append(temp)
     
     # use RandomForest as model to train ai
@@ -54,7 +56,7 @@ if __name__ == '__main__':
 
     # make plot
     date_plot = data['date'][2166:2990]
-    data_plot = data['USD/NTD'][2166:2990]
+    data_plot = data[merchandise][2166:2990]
     date_plot.reset_index(inplace = True, drop = True)
     data_plot.reset_index(inplace = True, drop = True)
     plt.plot(date_plot, y_predict)
@@ -63,7 +65,7 @@ if __name__ == '__main__':
     ax = plt.subplot(111)
     plt.title("RandomForest Prediction")    
     ax.set_xlabel('date')
-    ax.set_ylabel('USD/NTD', rotation = 0)
+    ax.set_ylabel(merchandise, rotation = 0)
     ax.xaxis.set_major_locator(ticker.MultipleLocator(51))
     plt.show()
     
@@ -72,8 +74,8 @@ if __name__ == '__main__':
     # the goal is to reduce this value
     error = 0
     for i in range(len(data_plot)):
-        error += abs(data_plot[i] - y_predict[i])
-    print(error)
+        error = error + abs(data_plot[i] - y_predict[i])/data_plot[i]
+    print('Average error: ' + "{:.4f}".format(error/len(data_plot)*100) + '%')
 
     # (optional) output ai model as pickle file
     with open('save/Random_ForestPrediction.pickle', 'wb') as f:
