@@ -70,7 +70,6 @@ if __name__ == '__main__':
     plt.show()
     
     # count deviation
-    # add all abs(true price - predict price)
     # the goal is to reduce this value
     error = 0
     for i in range(len(data_plot)):
