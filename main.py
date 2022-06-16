@@ -16,11 +16,11 @@ if __name__ == '__main__':
 
     # get train data to train ai model
     # use last 30 days data to predict current data
-    # train data range from 2010/04/01 to 2018/12/28
+    # train data range from 2009/04/01 to 2018/12/28
     # use spread rather than price to improve accuracy
     x_train = []
     y_train = []
-    for i in range(0, 2136):
+    for i in range(1000, 2444):
         temp = []
         for j in range(0, 31):
             if j == 30:
@@ -30,11 +30,11 @@ if __name__ == '__main__':
         x_train.append(temp)
 
     # get test data to predict price
-    # test data range from 2019/01/02 to 2022/05/26
+    # test data range from 2019/01/02 to 2022/06/16
     x_test = []
     y_test = []
     x_base = []
-    for i in range(2136, 2960):
+    for i in range(2444, 3282):
         temp = []
         x_base.append(data[merchandise][i])
         for j in range(0, 31):
@@ -55,8 +55,8 @@ if __name__ == '__main__':
         y_predict[i] = y_predict[i] + x_base[i]
 
     # make plot
-    date_plot = data['date'][2166:2990]
-    data_plot = data[merchandise][2166:2990]
+    date_plot = data['date'][2474:3312]
+    data_plot = data[merchandise][2474:3312]
     date_plot.reset_index(inplace = True, drop = True)
     data_plot.reset_index(inplace = True, drop = True)
     plt.plot(date_plot, y_predict)
@@ -66,7 +66,7 @@ if __name__ == '__main__':
     plt.title("RandomForest Prediction")    
     ax.set_xlabel('date')
     ax.set_ylabel(merchandise, rotation = 0)
-    ax.xaxis.set_major_locator(ticker.MultipleLocator(51))
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(52.3))
     plt.show()
     
     # count deviation
