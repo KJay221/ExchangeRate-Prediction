@@ -8,7 +8,7 @@ $ pipenv install
 $ pipenv shell
 $ python3 main.py
 ```
-then enter which merchandise you want to predict.
+then enter the merchandise which you want to predict.
 + USD/NTD
 + RMB/NTD
 + EU/USD
@@ -17,4 +17,4 @@ then enter which merchandise you want to predict.
 + AUD/USD
 + USD/HKD
 
-you will get predict result and error rate.
+finally, you will get predict result and error rate.
