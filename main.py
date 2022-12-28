@@ -1,3 +1,4 @@
+import os
 import pickle
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
@@ -66,8 +67,13 @@ if __name__ == '__main__':
     plt.title("RandomForest Prediction")    
     ax.set_xlabel('date')
     ax.set_ylabel(merchandise, rotation = 0)
-    ax.xaxis.set_major_locator(ticker.MultipleLocator(52.3))
-    plt.show()
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(160))
+    print()
+    newpath = './picture'
+    merchandise = merchandise.replace("/", "-" )
+    if not os.path.exists(newpath):
+        os.makedirs(newpath)
+    plt.savefig("./picture/" + merchandise + ".png")
     
     # count deviation
     # the goal is to reduce this value
@@ -77,5 +83,8 @@ if __name__ == '__main__':
     print('Average error: ' + "{:.4f}".format(error/len(data_plot)*100) + '%')
 
     # (optional) output ai model as pickle file
-    with open('save/Random_ForestPrediction.pickle', 'wb') as f:
+    newpath = './model'
+    if not os.path.exists(newpath):
+        os.makedirs(newpath)
+    with open('model/Random_ForestPrediction.pickle', 'wb') as f:
         pickle.dump(model, f)
